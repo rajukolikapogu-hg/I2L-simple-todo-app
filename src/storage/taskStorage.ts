@@ -27,19 +27,43 @@ export interface StorageLike {
 export class TaskStorage {
   constructor(private readonly storage: StorageLike) {}
 
-  /** Reads the persisted tasks, keeping only entries that match the Task shape. */
+  /**
+   * Reads the persisted tasks, keeping only entries that match the Task shape.
+   *
+   * Storage is user-editable and survives across app versions, so anything can
+   * be in there. Missing, unreadable, unparseable and structurally wrong
+   * payloads all resolve to an empty collection rather than an exception —
+   * startup must never fail because of what is (or isn't) in storage.
+   */
   load(): Task[] {
-    const raw = this.storage.getItem(STORAGE_KEY);
+    let raw: string | null;
+    try {
+      raw = this.storage.getItem(STORAGE_KEY);
+    } catch {
+      return [];
+    }
     if (raw === null) return [];
 
-    const parsed: unknown = JSON.parse(raw);
-    return extractTasks(parsed);
+    try {
+      return extractTasks(JSON.parse(raw) as unknown);
+    } catch {
+      return [];
+    }
   }
 
-  /** Writes the full collection; called on every mutation. */
-  save(tasks: Task[]): void {
+  /**
+   * Writes the full collection; called on every mutation. A failed write (quota
+   * exceeded, storage disabled mid-session) leaves the in-memory collection
+   * intact so the app stays usable, and reports it via the return value.
+   */
+  save(tasks: Task[]): boolean {
     const state: StoredState = { version: STORAGE_VERSION, tasks };
-    this.storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+      this.storage.setItem(STORAGE_KEY, JSON.stringify(state));
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
 
