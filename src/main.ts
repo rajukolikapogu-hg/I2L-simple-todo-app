@@ -4,8 +4,8 @@ import { TaskStorage } from './storage/taskStorage';
 import { resolveStorage } from './storage/safeStorage';
 import { mountApp } from './ui/app';
 
-const { storage } = resolveStorage();
+const { storage, persistent } = resolveStorage();
 const store = new TaskStore(new TaskStorage(storage));
 
 const root = document.querySelector<HTMLDivElement>('#app');
-if (root) mountApp(root, store);
+if (root) mountApp(root, store, { persistent });
