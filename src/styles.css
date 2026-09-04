@@ -36,6 +36,13 @@ body {
   padding: 2rem 1rem 4rem;
 }
 
+/* Nothing may force the page wider than the viewport; a stray long word in a
+   task title is the usual culprit. */
+html,
+body {
+  overflow-x: hidden;
+}
+
 h1 {
   font-size: 1.6rem;
   margin: 0 0 1rem;
@@ -114,7 +121,8 @@ h1 {
 .task {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.65rem;
@@ -153,7 +161,9 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  flex: 1;
+  /* Takes the full row on its own line below ~26rem, so a long title never
+     squeezes the date and delete controls off the edge. */
+  flex: 1 1 12rem;
   min-width: 0;
   cursor: pointer;
 }
@@ -290,4 +300,64 @@ h1 {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* Narrow viewports (phones, and the 320px floor)
+   ---------------------------------------------
+   Below 30rem the form and each task row stack rather than compete for a single
+   line, and the action buttons stretch to full width so they stay comfortably
+   tappable. */
+@media (max-width: 30rem) {
+  .app {
+    padding: 1.25rem 0.75rem 3rem;
+  }
+
+  .task-form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.85rem;
+  }
+
+  .task-form .button--primary {
+    width: 100%;
+  }
+
+  .task {
+    align-items: flex-start;
+  }
+
+  .task__toggle {
+    flex: 1 1 100%;
+  }
+
+  .task__due-control,
+  .task__actions {
+    flex: 1 1 auto;
+  }
+
+  .task__due-display,
+  .task__due-editor,
+  .task__confirm {
+    justify-content: flex-start;
+  }
+
+  .task__due-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Touch targets: keep every control at least 44px tall on coarse pointers,
+   which is the smallest comfortably tappable size. */
+@media (pointer: coarse) {
+  .button,
+  .field input,
+  .task__due-input {
+    min-height: 44px;
+  }
+
+  .task__checkbox {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
 }
