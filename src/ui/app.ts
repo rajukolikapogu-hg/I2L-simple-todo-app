@@ -13,6 +13,13 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   const heading = document.createElement('h1');
   heading.textContent = 'Simple Todo App';
 
+  // Name the form and the list regions, so a screen reader user moving by
+  // landmark hears what each one is rather than "form" and "list".
+  const formHeading = document.createElement('h2');
+  formHeading.id = 'add-task-heading';
+  formHeading.className = 'visually-hidden';
+  formHeading.textContent = 'Add a task';
+
   const form = createTaskForm((input) => {
     const { valid, errors } = validateNewTask(input);
     form.setErrors(errors);
@@ -31,7 +38,9 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   list.setAttribute('aria-live', 'polite');
   list.setAttribute('aria-label', 'Tasks, soonest due first');
 
-  main.append(heading, form.element, list);
+  form.element.setAttribute('aria-labelledby', formHeading.id);
+
+  main.append(heading, formHeading, form.element, list);
   root.replaceChildren(main);
 
   // Saving a due date re-sorts the list, which replaces the row the user was
