@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { STORAGE_KEY, TaskStorage } from '../src/storage/taskStorage';
 import { TaskStore } from '../src/domain/taskStore';
-import { MemoryStorage } from './helpers/memoryStorage';
+import { MemoryStorage } from '../src/storage/safeStorage';
 
 describe('TaskStorage', () => {
   it('round-trips tasks through storage', () => {
