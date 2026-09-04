@@ -132,3 +132,19 @@ h1 {
   font-size: 0.85rem;
   white-space: nowrap;
 }
+
+.field__error {
+  color: #c0392b;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .field__error {
+    color: #ff8a7a;
+  }
+}
+
+.field input[aria-invalid='true'] {
+  border-color: #c0392b;
+}

@@ -1,4 +1,5 @@
 import type { NewTaskInput } from '../domain/task';
+import type { ValidationResult } from '../domain/validation';
 
 export interface TaskFormHandle {
   element: HTMLFormElement;
@@ -6,6 +7,8 @@ export interface TaskFormHandle {
   focus(): void;
   /** Clears the fields back to their initial state. */
   reset(): void;
+  /** Shows (or, given no errors, clears) validation messages. */
+  setErrors(errors: ValidationResult['errors']): void;
 }
 
 /**
@@ -16,51 +19,115 @@ export interface TaskFormHandle {
 export function createTaskForm(onSubmit: (input: NewTaskInput) => void): TaskFormHandle {
   const form = document.createElement('form');
   form.className = 'task-form';
+  // The browser's own bubble would pre-empt our inline messages, and it is not
+  // announced consistently by screen readers.
   form.noValidate = true;
 
-  const titleField = document.createElement('div');
-  titleField.className = 'field field--title';
-  const titleLabel = document.createElement('label');
-  titleLabel.htmlFor = 'task-title';
-  titleLabel.textContent = 'Task';
-  const title = document.createElement('input');
-  title.id = 'task-title';
-  title.name = 'title';
-  title.type = 'text';
-  title.placeholder = 'What needs doing?';
-  title.autocomplete = 'off';
-  titleField.append(titleLabel, title);
+  const title = buildField({
+    id: 'task-title',
+    name: 'title',
+    label: 'Task',
+    type: 'text',
+    className: 'field--title',
+  });
+  title.input.placeholder = 'What needs doing?';
+  title.input.autocomplete = 'off';
 
-  const dateField = document.createElement('div');
-  dateField.className = 'field field--date';
-  const dateLabel = document.createElement('label');
-  dateLabel.htmlFor = 'task-due-date';
-  dateLabel.textContent = 'Due date';
-  const dueDate = document.createElement('input');
-  dueDate.id = 'task-due-date';
-  dueDate.name = 'dueDate';
-  dueDate.type = 'date';
-  dueDate.value = today();
-  dateField.append(dateLabel, dueDate);
+  const dueDate = buildField({
+    id: 'task-due-date',
+    name: 'dueDate',
+    label: 'Due date',
+    type: 'date',
+    className: 'field--date',
+  });
+  dueDate.input.value = today();
 
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.className = 'button button--primary';
   submit.textContent = 'Add task';
 
-  form.append(titleField, dateField, submit);
+  form.append(title.wrapper, dueDate.wrapper, submit);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    onSubmit({ title: title.value.trim(), dueDate: dueDate.value });
+    onSubmit({ title: title.input.value.trim(), dueDate: dueDate.input.value });
   });
+
+  const fields = { title, dueDate } as const;
 
   return {
     element: form,
-    focus: () => title.focus(),
+    focus: () => title.input.focus(),
     reset: () => {
-      title.value = '';
-      dueDate.value = today();
+      title.input.value = '';
+      dueDate.input.value = today();
+    },
+    setErrors: (errors) => {
+      let focused = false;
+      for (const key of ['title', 'dueDate'] as const) {
+        const message = errors[key];
+        fields[key].setError(message);
+        // Send focus to the first field that failed, so a keyboard or screen
+        // reader user lands on the problem rather than hunting for it.
+        if (message && !focused) {
+          fields[key].input.focus();
+          focused = true;
+        }
+      }
+    },
+  };
+}
+
+interface FieldHandle {
+  wrapper: HTMLDivElement;
+  input: HTMLInputElement;
+  setError(message: string | undefined): void;
+}
+
+function buildField(options: {
+  id: string;
+  name: string;
+  label: string;
+  type: string;
+  className: string;
+}): FieldHandle {
+  const wrapper = document.createElement('div');
+  wrapper.className = `field ${options.className}`;
+
+  const label = document.createElement('label');
+  label.htmlFor = options.id;
+  label.textContent = options.label;
+
+  const input = document.createElement('input');
+  input.id = options.id;
+  input.name = options.name;
+  input.type = options.type;
+
+  const error = document.createElement('p');
+  error.id = `${options.id}-error`;
+  error.className = 'field__error';
+  // role=alert makes the message announced as soon as it appears.
+  error.setAttribute('role', 'alert');
+  error.hidden = true;
+
+  wrapper.append(label, input, error);
+
+  return {
+    wrapper,
+    input,
+    setError(message) {
+      if (message) {
+        error.textContent = message;
+        error.hidden = false;
+        input.setAttribute('aria-invalid', 'true');
+        input.setAttribute('aria-describedby', error.id);
+      } else {
+        error.textContent = '';
+        error.hidden = true;
+        input.removeAttribute('aria-invalid');
+        input.removeAttribute('aria-describedby');
+      }
     },
   };
 }

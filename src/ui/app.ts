@@ -1,5 +1,6 @@
 import { sortByDueDate } from '../domain/sortTasks';
 import type { TaskStore } from '../domain/taskStore';
+import { validateNewTask } from '../domain/validation';
 import { createTaskForm } from './taskForm';
 import { renderTaskList } from './taskList';
 
@@ -12,6 +13,10 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   heading.textContent = 'Simple Todo App';
 
   const form = createTaskForm((input) => {
+    const { valid, errors } = validateNewTask(input);
+    form.setErrors(errors);
+    if (!valid) return;
+
     store.add(input);
     form.reset();
     form.focus();
