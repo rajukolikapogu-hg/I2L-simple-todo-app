@@ -50,11 +50,15 @@ rebuild is needed when the deploy path changes.
 
 ### GitHub Pages
 
-`.github/workflows/deploy.yml` builds and deploys `main` to GitHub Pages on every
-push. It authenticates with OIDC, so there is no token to store.
+`.github/workflows/deploy.yml` builds and deploys to GitHub Pages, authenticating
+with OIDC so there is no token to store.
 
-To turn it on: **Settings → Pages → Build and deployment → Source: GitHub Actions**,
-then push to `main` (or run the workflow manually from the Actions tab).
+It is currently **manual only** (`workflow_dispatch`), because Pages is not
+available to this repository yet — see the note below. Once it is:
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions**
+2. Uncomment the `push: branches: [main]` trigger at the top of the workflow, so
+   every merge to `main` deploys.
 
 > GitHub Pages serves private repositories only on paid plans. On a free plan the
 > repository must be public for Pages to publish.
