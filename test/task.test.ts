@@ -14,8 +14,9 @@ describe('Task model', () => {
 
   it('gives each created task a unique id', () => {
     const ids = new Set(
-      Array.from({ length: 50 }, () =>
-        createTask({ title: 't', dueDate: '2026-01-15' }).id,
+      Array.from(
+        { length: 50 },
+        () => createTask({ title: 't', dueDate: '2026-01-15' }).id,
       ),
     );
 

@@ -20,7 +20,9 @@ function click(el: HTMLElement): void {
 }
 
 function press(el: HTMLElement, key: string): void {
-  el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+  el.dispatchEvent(
+    new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }),
+  );
 }
 
 describe('keyboard operation', () => {
@@ -52,8 +54,7 @@ describe('keyboard operation', () => {
     ui.submit('Buy milk', '2026-01-15');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
-    const classesOf = () =>
-      tabbable(ui.root).flatMap((el) => [...el.classList]);
+    const classesOf = () => tabbable(ui.root).flatMap((el) => [...el.classList]);
 
     expect(classesOf()).not.toContain('task__due-input');
     expect(classesOf()).not.toContain('task__confirm-delete');
