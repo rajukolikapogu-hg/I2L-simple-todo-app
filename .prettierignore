@@ -1,3 +1,9 @@
 dist
 node_modules
 package-lock.json
+
+# Client-supplied planning documents: kept verbatim as delivered.
+docs/ACCEPTANCE_CRITERIA.md
+docs/PROJECT_PLAN.md
+docs/SOW.md
+docs/TEST_PLAN.md

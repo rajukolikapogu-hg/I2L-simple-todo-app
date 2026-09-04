@@ -112,9 +112,7 @@ describe('deleting a task', () => {
     ui.submit('Buy milk', '2026-01-15');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
-    expect(within(row, '.task__delete').getAttribute('aria-label')).toContain(
-      'Buy milk',
-    );
+    expect(within(row, '.task__delete').getAttribute('aria-label')).toContain('Buy milk');
     expect(within(row, '.task__confirm-delete').getAttribute('aria-label')).toContain(
       'Buy milk',
     );

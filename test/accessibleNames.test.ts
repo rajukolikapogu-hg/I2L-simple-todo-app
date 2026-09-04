@@ -56,11 +56,9 @@ describe('accessible names', () => {
     ui.submit('Buy milk', '2026-01-15');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
-    const named = [
-      '.task__checkbox',
-      '.task__edit-due',
-      '.task__delete',
-    ].map((selector) => row.querySelector(selector)!.getAttribute('aria-label'));
+    const named = ['.task__checkbox', '.task__edit-due', '.task__delete'].map(
+      (selector) => row.querySelector(selector)!.getAttribute('aria-label'),
+    );
 
     for (const name of named) {
       expect(name).toContain('Buy milk');

@@ -20,13 +20,13 @@ attribute, so Tab never lands on something the user cannot see.
 
 ## Keys
 
-| Key | Where | Does |
-| --- | --- | --- |
-| `Enter` | Task title / due date input | Submits the form and adds the task |
-| `Space` | Completion checkbox | Toggles the task complete or incomplete |
-| `Enter` / `Space` | Any button | Activates it |
-| `Enter` | Due-date editor | Saves the new date |
-| `Escape` | Due-date editor | Cancels the edit and restores the previous date |
+| Key               | Where                       | Does                                            |
+| ----------------- | --------------------------- | ----------------------------------------------- |
+| `Enter`           | Task title / due date input | Submits the form and adds the task              |
+| `Space`           | Completion checkbox         | Toggles the task complete or incomplete         |
+| `Enter` / `Space` | Any button                  | Activates it                                    |
+| `Enter`           | Due-date editor             | Saves the new date                              |
+| `Escape`          | Due-date editor             | Cancels the edit and restores the previous date |
 
 Buttons are real `<button>` elements and the toggle is a real
 `<input type="checkbox">`, so `Enter`/`Space` activation comes from the platform
