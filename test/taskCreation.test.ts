@@ -1,43 +1,13 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { TaskStore } from '../src/domain/taskStore';
-import { TaskStorage } from '../src/storage/taskStorage';
-import { MemoryStorage } from '../src/storage/safeStorage';
-import { mountApp } from '../src/ui/app';
 import { sortByDueDate } from '../src/domain/sortTasks';
 import { createTask } from '../src/domain/task';
-
-function mount() {
-  const root = document.createElement('div');
-  document.body.replaceChildren(root);
-  const backing = new MemoryStorage();
-  const store = new TaskStore(new TaskStorage(backing));
-  mountApp(root, store);
-
-  const title = root.querySelector<HTMLInputElement>('#task-title')!;
-  const dueDate = root.querySelector<HTMLInputElement>('#task-due-date')!;
-  const form = root.querySelector<HTMLFormElement>('form')!;
-
-  return {
-    root,
-    store,
-    backing,
-    title,
-    dueDate,
-    submit(taskTitle: string, date: string) {
-      title.value = taskTitle;
-      dueDate.value = date;
-      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-    },
-    titles: () =>
-      [...root.querySelectorAll('.task__title')].map((el) => el.textContent ?? ''),
-  };
-}
+import { mountTestApp } from './helpers/mountApp';
 
 describe('creating a task', () => {
   beforeEach(() => document.body.replaceChildren());
 
   it('adds the task to the list and to storage', () => {
-    const ui = mount();
+    const ui = mountTestApp();
 
     ui.submit('Buy milk', '2026-01-15');
 
@@ -48,7 +18,7 @@ describe('creating a task', () => {
   });
 
   it('places a new task in due-date order without a reload', () => {
-    const ui = mount();
+    const ui = mountTestApp();
 
     ui.submit('Later', '2026-03-01');
     ui.submit('Sooner', '2026-01-05');
@@ -58,7 +28,7 @@ describe('creating a task', () => {
   });
 
   it('gives every task a unique id and a creation timestamp', () => {
-    const ui = mount();
+    const ui = mountTestApp();
 
     ui.submit('One', '2026-01-01');
     ui.submit('Two', '2026-01-02');
@@ -71,7 +41,7 @@ describe('creating a task', () => {
   });
 
   it('clears the fields and returns focus to the title after a creation', () => {
-    const ui = mount();
+    const ui = mountTestApp();
 
     ui.submit('Buy milk', '2026-01-15');
 
@@ -80,7 +50,7 @@ describe('creating a task', () => {
   });
 
   it('renders a title containing markup as plain text', () => {
-    const ui = mount();
+    const ui = mountTestApp();
 
     ui.submit('<img src=x onerror=alert(1)>', '2026-01-15');
 
