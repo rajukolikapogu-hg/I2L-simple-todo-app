@@ -31,6 +31,7 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   const render = (): void =>
     renderTaskList(list, sortByDueDate(store.getTasks()), {
       onToggleComplete: (id, completed) => store.update(id, { completed }),
+      onDelete: (id) => store.remove(id),
     });
   store.subscribe(render);
   render();

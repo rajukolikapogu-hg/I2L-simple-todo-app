@@ -170,3 +170,35 @@ h1 {
   text-decoration: line-through;
   color: var(--muted);
 }
+
+.task__actions {
+  flex: none;
+}
+
+.task__confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.task__confirm-text {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.button--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.button--danger {
+  background: #c0392b;
+  color: #fff;
+}
+
+.task__actions .button {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.85rem;
+}
