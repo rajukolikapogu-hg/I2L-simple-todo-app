@@ -36,6 +36,15 @@ export function mountTestApp() {
     },
     titles: (): string[] =>
       [...root.querySelectorAll('.task__title')].map((el) => el.textContent ?? ''),
+    /** The rendered row for a task, looked up by the id in its dataset. */
+    row: (id: string): HTMLLIElement => {
+      const el = root.querySelector<HTMLLIElement>(`li[data-task-id="${id}"]`);
+      if (!el) throw new Error(`expected a row for task ${id}`);
+      return el;
+    },
+    checkboxes: (): HTMLInputElement[] => [
+      ...root.querySelectorAll<HTMLInputElement>('.task__checkbox'),
+    ],
     /** What is actually written to storage, as opposed to what is in memory. */
     persisted: (): Task[] => {
       const raw = backing.getItem(STORAGE_KEY);

@@ -28,7 +28,10 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   main.append(heading, form.element, list);
   root.replaceChildren(main);
 
-  const render = (): void => renderTaskList(list, sortByDueDate(store.getTasks()));
+  const render = (): void =>
+    renderTaskList(list, sortByDueDate(store.getTasks()), {
+      onToggleComplete: (id, completed) => store.update(id, { completed }),
+    });
   store.subscribe(render);
   render();
 }
