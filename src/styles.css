@@ -148,3 +148,25 @@ h1 {
 .field input[aria-invalid='true'] {
   border-color: #c0392b;
 }
+
+.task__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.task__checkbox {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--accent);
+  flex: none;
+  cursor: pointer;
+}
+
+.task--completed .task__title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
