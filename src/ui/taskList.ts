@@ -4,10 +4,13 @@ import type { Task } from '../domain/task';
 export interface TaskListActions {
   onToggleComplete(id: string, completed: boolean): void;
   onDelete(id: string): void;
+  /** Returns false when the date was rejected, so the row can keep the editor open. */
+  onEditDueDate(id: string, dueDate: string): boolean;
 }
 
-export const EMPTY_STATE_MESSAGE =
-  'Nothing to do yet — add your first task above.';
+export const INVALID_DUE_DATE_MESSAGE = 'Please choose a valid due date.';
+
+export const EMPTY_STATE_MESSAGE = 'Nothing to do yet — add your first task above.';
 
 /**
  * Renders the sorted tasks into `list`. Titles go in via `textContent`, never
@@ -60,13 +63,124 @@ function renderTaskItem(task: Task, actions: TaskListActions): HTMLLIElement {
 
   label.append(checkbox, title);
 
+  item.append(
+    label,
+    buildDueDateControl(task, actions),
+    buildDeleteControl(task, actions),
+  );
+  return item;
+}
+
+/**
+ * The task's due date, which swaps in place for a date input when edited.
+ *
+ * The input is pre-filled with the current value, and a rejected date leaves
+ * both the editor open and the stored value untouched, so nothing is lost when
+ * a user clears the field or types something the browser cannot parse.
+ */
+function buildDueDateControl(task: Task, actions: TaskListActions): HTMLDivElement {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'task__due-control';
+
+  const display = document.createElement('div');
+  display.className = 'task__due-display';
+
   const due = document.createElement('time');
   due.className = 'task__due';
   due.dateTime = task.dueDate;
   due.textContent = formatDueDate(task.dueDate);
 
-  item.append(label, due, buildDeleteControl(task, actions));
-  return item;
+  const editButton = document.createElement('button');
+  editButton.type = 'button';
+  editButton.className = 'button button--ghost task__edit-due';
+  editButton.textContent = 'Edit date';
+  editButton.setAttribute('aria-label', `Edit due date for "${task.title}"`);
+
+  display.append(due, editButton);
+
+  const editor = document.createElement('div');
+  editor.className = 'task__due-editor';
+  editor.hidden = true;
+
+  const input = document.createElement('input');
+  input.type = 'date';
+  input.className = 'task__due-input';
+  input.id = `task-due-${task.id}`;
+  input.setAttribute('aria-label', `Due date for "${task.title}"`);
+
+  const save = document.createElement('button');
+  save.type = 'button';
+  save.className = 'button button--primary task__save-due';
+  save.textContent = 'Save';
+  save.setAttribute('aria-label', `Save due date for "${task.title}"`);
+
+  const cancel = document.createElement('button');
+  cancel.type = 'button';
+  cancel.className = 'button button--ghost task__cancel-due';
+  cancel.textContent = 'Cancel';
+  cancel.setAttribute('aria-label', `Cancel editing due date for "${task.title}"`);
+
+  const error = document.createElement('p');
+  error.className = 'task__due-error field__error';
+  error.id = `task-due-${task.id}-error`;
+  error.setAttribute('role', 'alert');
+  error.hidden = true;
+
+  editor.append(input, save, cancel, error);
+  wrapper.append(display, editor);
+
+  const setError = (message: string | undefined): void => {
+    if (message) {
+      error.textContent = message;
+      error.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+      input.setAttribute('aria-describedby', error.id);
+    } else {
+      error.textContent = '';
+      error.hidden = true;
+      input.removeAttribute('aria-invalid');
+      input.removeAttribute('aria-describedby');
+    }
+  };
+
+  const openEditor = (): void => {
+    // Always re-seed from the task, so re-opening after a cancel shows the
+    // stored value rather than the abandoned edit.
+    input.value = task.dueDate;
+    setError(undefined);
+    display.hidden = true;
+    editor.hidden = false;
+    input.focus();
+  };
+
+  const closeEditor = (): void => {
+    setError(undefined);
+    editor.hidden = true;
+    display.hidden = false;
+    editButton.focus();
+  };
+
+  editButton.addEventListener('click', openEditor);
+  cancel.addEventListener('click', closeEditor);
+  save.addEventListener('click', () => {
+    // A rejected date keeps the editor open with the message, so the user can
+    // correct it; the accepted case re-renders the whole list from the store.
+    if (!actions.onEditDueDate(task.id, input.value)) {
+      setError(INVALID_DUE_DATE_MESSAGE);
+      input.focus();
+    }
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      save.click();
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      closeEditor();
+    }
+  });
+
+  return wrapper;
 }
 
 /**

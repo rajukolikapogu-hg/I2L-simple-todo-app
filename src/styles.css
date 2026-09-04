@@ -210,3 +210,38 @@ h1 {
   padding: 1.5rem 1rem;
   text-align: center;
 }
+
+.task__due-control {
+  flex: none;
+}
+
+.task__due-display,
+.task__due-editor {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.task__due-input {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.45rem;
+}
+
+.task__due-input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.task__due-error {
+  flex-basis: 100%;
+}
+
+.task__due-control .button {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.85rem;
+}
