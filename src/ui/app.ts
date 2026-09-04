@@ -1,5 +1,6 @@
 import { sortByDueDate } from '../domain/sortTasks';
 import type { TaskStore } from '../domain/taskStore';
+import { isIsoDate } from '../domain/task';
 import { validateNewTask } from '../domain/validation';
 import { createTaskForm } from './taskForm';
 import { renderTaskList } from './taskList';
@@ -37,6 +38,13 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
     renderTaskList(list, sortByDueDate(store.getTasks()), {
       onToggleComplete: (id, completed) => store.update(id, { completed }),
       onDelete: (id) => store.remove(id),
+      onEditDueDate: (id, dueDate) => {
+        // Reject rather than persist: the row keeps the prior value on screen
+        // and surfaces the message itself.
+        if (!isIsoDate(dueDate)) return false;
+        store.update(id, { dueDate });
+        return true;
+      },
     });
   store.subscribe(render);
   render();
