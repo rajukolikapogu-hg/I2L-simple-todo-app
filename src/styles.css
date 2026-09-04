@@ -245,3 +245,33 @@ h1 {
   padding: 0.35rem 0.65rem;
   font-size: 0.85rem;
 }
+
+/* Focus indicators
+   ---------------
+   A single visible ring on every focusable element. :focus-visible keeps it off
+   for mouse clicks while always showing it for keyboard users; the :focus
+   fallback covers browsers without :focus-visible support. */
+:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.3rem;
+}
+
+.task__checkbox:focus-visible {
+  outline-offset: 3px;
+}
+
+/* The row label wraps the checkbox; highlight the row when the checkbox inside
+   it has keyboard focus, so the target of the toggle is unmistakable. */
+.task:has(.task__checkbox:focus-visible) {
+  border-color: var(--accent);
+}
