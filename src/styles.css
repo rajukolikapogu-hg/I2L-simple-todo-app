@@ -202,3 +202,11 @@ h1 {
   padding: 0.35rem 0.65rem;
   font-size: 0.85rem;
 }
+
+.task-list__empty {
+  border: 1px dashed var(--border);
+  border-radius: 0.65rem;
+  color: var(--muted);
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
