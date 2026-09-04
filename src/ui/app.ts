@@ -34,7 +34,12 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
   main.append(heading, form.element, list);
   root.replaceChildren(main);
 
-  const render = (): void =>
+  // Saving a due date re-sorts the list, which replaces the row the user was
+  // standing on and would otherwise drop focus to the document body. Remember
+  // where to put focus back and restore it once the new rows exist.
+  let refocusTaskId: string | null = null;
+
+  const render = (): void => {
     renderTaskList(list, sortByDueDate(store.getTasks()), {
       onToggleComplete: (id, completed) => store.update(id, { completed }),
       onDelete: (id) => store.remove(id),
@@ -42,10 +47,23 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
         // Reject rather than persist: the row keeps the prior value on screen
         // and surfaces the message itself.
         if (!isIsoDate(dueDate)) return false;
+        refocusTaskId = id;
         store.update(id, { dueDate });
         return true;
       },
     });
+
+    if (refocusTaskId !== null) {
+      const id = refocusTaskId;
+      refocusTaskId = null;
+      list
+        .querySelector<HTMLButtonElement>(
+          `li[data-task-id="${CSS.escape(id)}"] .task__edit-due`,
+        )
+        ?.focus();
+    }
+  };
+
   store.subscribe(render);
   render();
 }
