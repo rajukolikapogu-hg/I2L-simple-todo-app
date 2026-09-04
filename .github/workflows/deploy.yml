@@ -1,8 +1,11 @@
 name: Deploy to GitHub Pages
 
+# Manual only, until a host is chosen. GitHub Pages does not serve private
+# repositories on the free plan, so an automatic run on every push to main would
+# fail every time and bury real CI failures in the noise. Re-enable the push
+# trigger once Pages is available (repo made public, or plan upgraded) — see the
+# Deploying section of the README for the alternatives.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 # Read the repo, write the Pages deployment, and mint the OIDC token the
