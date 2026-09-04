@@ -4,9 +4,19 @@ import { isIsoDate } from '../domain/task';
 import { validateNewTask } from '../domain/validation';
 import { createTaskForm } from './taskForm';
 import { renderTaskList } from './taskList';
+import { createStorageNotice } from './storageNotice';
+
+export interface MountOptions {
+  /** False when storage is unavailable, which changes the wording of the notice. */
+  persistent?: boolean;
+}
 
 /** Builds the app shell into `root` and keeps it in sync with the store. */
-export function mountApp(root: HTMLElement, store: TaskStore): void {
+export function mountApp(
+  root: HTMLElement,
+  store: TaskStore,
+  options: MountOptions = {},
+): void {
   const main = document.createElement('main');
   main.className = 'app';
 
@@ -40,7 +50,10 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
 
   form.element.setAttribute('aria-labelledby', formHeading.id);
 
-  main.append(heading, formHeading, form.element, list);
+  // Below the list, so it does not sit between the user and the create form.
+  const notice = createStorageNotice(options.persistent ?? true);
+
+  main.append(heading, formHeading, form.element, list, notice);
   root.replaceChildren(main);
 
   // Saving a due date re-sorts the list, which replaces the row the user was
