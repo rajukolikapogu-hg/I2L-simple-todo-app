@@ -24,6 +24,11 @@ export function mountApp(root: HTMLElement, store: TaskStore): void {
 
   const list = document.createElement('ul');
   list.className = 'task-list';
+  // The list is the single source of truth on screen and is rebuilt wholesale on
+  // every change, so announce it as a live region rather than trying to describe
+  // each individual mutation.
+  list.setAttribute('aria-live', 'polite');
+  list.setAttribute('aria-label', 'Tasks, soonest due first');
 
   main.append(heading, form.element, list);
   root.replaceChildren(main);

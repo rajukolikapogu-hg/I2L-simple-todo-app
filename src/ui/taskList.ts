@@ -6,16 +6,33 @@ export interface TaskListActions {
   onDelete(id: string): void;
 }
 
+export const EMPTY_STATE_MESSAGE =
+  'Nothing to do yet — add your first task above.';
+
 /**
  * Renders the sorted tasks into `list`. Titles go in via `textContent`, never
  * `innerHTML`, so a title containing markup is shown as text rather than parsed.
+ *
+ * With no tasks the list is replaced by a friendly empty state rather than being
+ * left as a blank gap.
  */
 export function renderTaskList(
   list: HTMLUListElement,
   tasks: Task[],
   actions: TaskListActions,
 ): void {
+  if (tasks.length === 0) {
+    list.replaceChildren(renderEmptyState());
+    return;
+  }
   list.replaceChildren(...tasks.map((task) => renderTaskItem(task, actions)));
+}
+
+function renderEmptyState(): HTMLLIElement {
+  const item = document.createElement('li');
+  item.className = 'task-list__empty';
+  item.textContent = EMPTY_STATE_MESSAGE;
+  return item;
 }
 
 function renderTaskItem(task: Task, actions: TaskListActions): HTMLLIElement {
