@@ -78,11 +78,13 @@ export function mountApp(
     if (refocusTaskId !== null) {
       const id = refocusTaskId;
       refocusTaskId = null;
-      list
-        .querySelector<HTMLButtonElement>(
-          `li[data-task-id="${CSS.escape(id)}"] .task__edit-due`,
-        )
-        ?.focus();
+      // Match on the dataset rather than building a selector string: `CSS.escape`
+      // is missing outside real browsers, and ids are read back from storage
+      // where nothing guarantees they are selector-safe.
+      const row = [...list.children].find(
+        (child) => (child as HTMLElement).dataset.taskId === id,
+      );
+      row?.querySelector<HTMLButtonElement>('.task__edit-due')?.focus();
     }
   };
 
