@@ -29,6 +29,14 @@
   box-sizing: border-box;
 }
 
+/* The due-date editor and the delete confirmation are toggled with the `hidden`
+   property, but both are laid out with `display: flex`. An author `display`
+   beats the user-agent `[hidden] { display: none }`, so without this they stay
+   on screen in their "hidden" state. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--bg);
