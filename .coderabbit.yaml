@@ -1,0 +1,10 @@
+# CodeRabbit configuration
+# https://docs.coderabbit.ai/guides/configure-coderabbit
+reviews:
+  auto_review:
+    enabled: true
+  path_filters:
+    # Build output, committed only for the Pages deploy preview.
+    - "!dist/**"
+    # Machine-generated TestSprite plans and specs; regenerated on every run.
+    - "!testsprite_tests/**"

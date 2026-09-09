@@ -1,0 +1,1068 @@
+[
+  {
+    "id": "TC001",
+    "title": "Add a task and return focus to the title field",
+    "description": "Verifies that a user can create a task with a title and due date, see it appear in the list, and have focus return to the title field afterward.",
+    "category": "Create Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title with a unique task name"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new task appears in the task list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify focus returns to the task title field"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Add a task with the default due date",
+    "description": "Verifies that a user can create a task with a title and today’s default due date and then return focus to the task field.",
+    "category": "Sorted List View And Empty State",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with New task"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new task appears in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify focus returns to the task title field"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Create a task with today's due date and return focus to the title field",
+    "description": "This verifies that a user can add a task from the empty app and that the new task appears in the list with focus returned to the task title field.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Buy milk"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new task is displayed in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify focus returns to the task title field"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Reject a blank task title",
+    "description": "Verifies that leaving the title empty prevents task creation and shows inline validation feedback.",
+    "category": "Task Title And Date Validation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Clear the task title field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a task title validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no new task is added to the list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Keep tasks restored after reloading the page",
+    "description": "This verifies that tasks created in the browser are saved and restored when the app is opened again in the same browser.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Read book"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the saved task is displayed after reload"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Sort tasks by due date and update order after editing",
+    "description": "Verifies that tasks are initially sorted by due date and re-sort correctly after a task's due date is edited and saved.",
+    "category": "Create Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Create a task due later"
+      },
+      {
+        "type": "action",
+        "description": "Create a task due sooner"
+      },
+      {
+        "type": "action",
+        "description": "Open inline editing for the later task's due date"
+      },
+      {
+        "type": "action",
+        "description": "Change the due date to an earlier valid date"
+      },
+      {
+        "type": "action",
+        "description": "Save the edit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task list is sorted by due date"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the edited task moves to the correct position"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Use the default due date when creating a task",
+    "description": "Verifies that a user can create a task without changing the prefilled due date and the task is added successfully.",
+    "category": "Create Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title with a unique task name"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new task appears in the task list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task uses the default due date"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Reject an invalid due date",
+    "description": "Verifies that an invalid due date prevents task creation and shows a due date validation error.",
+    "category": "Sorted List View And Empty State",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Invalid date task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in an invalid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a due date validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no new task is added"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Sort tasks by due date when multiple tasks are added",
+    "description": "This verifies that tasks added with different due dates are displayed soonest-first so the list remains ordered correctly.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Later task"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Earlier task"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid earlier due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the tasks are displayed in due date order"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Delete a task from inline confirmation",
+    "description": "Verifies that confirming inline deletion removes the task from the list.",
+    "category": "Delete Task With Inline Confirmation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Delete me task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open the inline delete confirmation for the task"
+      },
+      {
+        "type": "action",
+        "description": "Confirm the deletion"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is removed from the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the empty state is visible if no tasks remain"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Reject a whitespace-only task title",
+    "description": "Verifies that a title containing only whitespace is treated as invalid and does not create a task.",
+    "category": "Task Title And Date Validation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title with whitespace only"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a task title validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no new task is added to the list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Sort tasks by soonest due date",
+    "description": "Verifies that tasks created with different due dates appear in soonest-first order in the list.",
+    "category": "Sorted List View And Empty State",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Later task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a later valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Earlier task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in an earlier valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the tasks are ordered by due date from soonest to latest"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Edit a task due date and keep the list resorted",
+    "description": "This verifies that inline due date editing updates the saved task and the list re-sorts without losing the edited task.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Change date task"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open inline editing for the task due date"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid earlier due date into the date editor"
+      },
+      {
+        "type": "action",
+        "description": "Save the edited due date"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains visible after editing"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task list is resorted by due date"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Mark a task complete and keep the completed state after reload",
+    "description": "This verifies that completion changes are saved locally and still shown after the page is reloaded.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Complete me"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task as complete"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is still marked complete after reload"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Mark a task complete and then incomplete",
+    "description": "Verifies that a task can be toggled complete and back to active status while staying visible in the list.",
+    "category": "Complete And Un-complete Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Create a new task with a unique task name"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task completion checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task completion checkbox again"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is shown as active"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC016",
+    "title": "Complete and uncomplete a task",
+    "description": "Verifies that a task can be marked complete and then returned to incomplete state from the list.",
+    "category": "Delete Task With Inline Confirmation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Toggle task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task completion control on"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task completion control off"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task returns to the incomplete state"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains in the list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC017",
+    "title": "Delete a task and keep it removed after reload",
+    "description": "This verifies that a deleted task disappears from the list and does not return after the page is reloaded.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Remove me"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open the delete confirmation for the task"
+      },
+      {
+        "type": "action",
+        "description": "Confirm deletion"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is no longer displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC018",
+    "title": "Cancel inline task deletion",
+    "description": "Verifies that opening delete confirmation and canceling keeps the task in the list.",
+    "category": "Delete Task With Inline Confirmation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Delete cancel task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open the inline delete confirmation for the task"
+      },
+      {
+        "type": "action",
+        "description": "Cancel the deletion"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the delete action is restored"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC019",
+    "title": "Keep a stable order for tasks with the same due date",
+    "description": "Verifies that tasks sharing the same due date keep a stable order instead of reshuffling unpredictably.",
+    "category": "Sorted List View And Empty State",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with First same-date task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Second same-date task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the same valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the tasks keep a stable order when due dates match"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC020",
+    "title": "Show an empty task list on first load",
+    "description": "Verifies that a new user opening the app with no saved tasks sees the empty state and storage notice instead of task rows.",
+    "category": "Sorted List View And Empty State",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the storage notice is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC021",
+    "title": "Preserve completion state after reload",
+    "description": "Verifies that a completed task remains completed after the page is reloaded from browser storage.",
+    "category": "Complete And Un-complete Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Create a new task with a unique task name"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the task completion checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is still present after reload"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains marked as completed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Cancel an inline due date edit",
+    "description": "Verifies that canceling an inline edit leaves the original due date unchanged.",
+    "category": "Edit Due Date",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Cancel edit task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open the inline date editor for the task"
+      },
+      {
+        "type": "action",
+        "description": "Change the date to another valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Cancel the edit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the original due date remains unchanged"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the editor is closed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Show validation and move focus to the first invalid field",
+    "description": "This verifies that submitting an invalid task shows inline validation and focuses the first field that needs correction.",
+    "category": "Keyboard And Screen Reader Accessibility",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Leave the task title field blank"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify focus moves to the first invalid field"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC024",
+    "title": "Keep editing open when saving an empty due date",
+    "description": "Verifies that clearing the inline due date shows a validation error and leaves the editor open without changing the task.",
+    "category": "Edit Due Date",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Invalid edit task"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a valid due date"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open the inline date editor for the task"
+      },
+      {
+        "type": "action",
+        "description": "Clear the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Save the date change"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a due date validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the editor remains open"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC025",
+    "title": "Show an empty state when there are no tasks",
+    "description": "Verifies that a first-time user with no saved tasks sees an empty list state instead of task rows.",
+    "category": "Create Task",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no tasks are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC026",
+    "title": "Show an empty list when stored task data is unreadable",
+    "description": "This verifies that malformed stored data is handled by showing an empty list instead of restoring broken tasks.",
+    "category": "Local Storage Persistence",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Replace the stored task data with unreadable content"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no tasks are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC027",
+    "title": "Use the keyboard to create and edit tasks",
+    "description": "Verifies that a keyboard-only user can create a task, open the date editor, save or cancel with keys, and receive the expected focus and validation behavior.",
+    "category": "Edit Due Date",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Press Tab to move through the form controls"
+      },
+      {
+        "type": "action",
+        "description": "Enter a task title using the keyboard"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form using the keyboard"
+      },
+      {
+        "type": "action",
+        "description": "Move focus to the task row controls using the keyboard"
+      },
+      {
+        "type": "action",
+        "description": "Open the inline date editor using the keyboard"
+      },
+      {
+        "type": "action",
+        "description": "Save the edited date using the keyboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task remains accessible through keyboard focus order"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the edited task is present in the list"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC028",
+    "title": "Show the empty state and storage notice on first load",
+    "description": "This verifies that a new user opening the app with no saved tasks sees the empty state and the browser-only storage notice immediately.",
+    "category": "Storage Limitation Notice",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the storage limitation notice is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC029",
+    "title": "Operate the app with the keyboard from form to task actions",
+    "description": "This verifies that a keyboard-only user can create a task and reach the row controls in a logical tab order without focus getting lost.",
+    "category": "Keyboard And Screen Reader Accessibility",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Press Tab to move through the form controls and task controls in order"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Keyboard task"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form using the keyboard"
+      },
+      {
+        "type": "action",
+        "description": "Press Tab to move to the task row controls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify focus remains within the app"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC030",
+    "title": "Cancel inline date editing with Escape",
+    "description": "This verifies that a user can open the inline date editor and cancel it with Escape without changing the task date.",
+    "category": "Keyboard And Screen Reader Accessibility",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the task title field with Keep original date"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid due date into the due date field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the task form"
+      },
+      {
+        "type": "action",
+        "description": "Open inline editing for the task due date"
+      },
+      {
+        "type": "action",
+        "description": "Press Escape"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify editing is closed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the original due date remains unchanged"
+      }
+    ],
+    "priority": "Low"
+  }
+]
