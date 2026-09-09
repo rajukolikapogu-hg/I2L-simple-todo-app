@@ -5,7 +5,20 @@
   --text: #1c1c1e;
   --muted: #6b6b70;
   --border: #d8d8dd;
-  --accent: #2f6fed;
+  /* Deep enough to carry white button text and to read as a focus ring against
+     the page: 5.2:1 and 4.6:1 respectively. */
+  --accent: #2563eb;
+  --accent-strong: #5b46e5;
+  --accent-contrast: #ffffff;
+  --accent-wash: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent) 35%, transparent);
+  --danger: #c0392b;
+  --danger-strong: #9c2c20;
+  --glow-a: rgba(47, 111, 237, 0.2);
+  --glow-b: rgba(139, 92, 246, 0.16);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 10px 26px rgba(16, 24, 40, 0.14);
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
   font-family:
     system-ui,
     -apple-system,
@@ -22,6 +35,12 @@
     --muted: #a0a0a8;
     --border: #34343b;
     --accent: #78a4ff;
+    --accent-strong: #a78bfa;
+    --accent-contrast: #0d1017;
+    --glow-a: rgba(59, 91, 219, 0.28);
+    --glow-b: rgba(124, 58, 237, 0.22);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 26px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -39,8 +58,35 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
+  background-color: var(--bg);
   color: var(--text);
+}
+
+/* Ambient background
+   ------------------
+   Two soft colour pools behind the page, drifting slowly. They sit on a fixed
+   pseudo-element and move with `transform`, so the browser composites the
+   motion instead of repainting the app on every frame. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(38% 42% at 22% 18%, var(--glow-a), transparent 70%),
+    radial-gradient(42% 45% at 78% 8%, var(--glow-b), transparent 72%);
+  animation: ambient-drift 26s var(--ease) infinite alternate;
+}
+
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.12);
+  }
 }
 
 .app {
@@ -90,6 +136,7 @@ h1 {
   border-radius: 0.75rem;
   padding: 1rem;
   margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .field {
@@ -116,6 +163,9 @@ h1 {
   border-radius: 0.5rem;
   padding: 0.55rem 0.7rem;
   min-width: 0;
+  transition:
+    border-color 160ms var(--ease),
+    background-color 160ms var(--ease);
 }
 
 .button {
@@ -125,11 +175,35 @@ h1 {
   border: 1px solid transparent;
   padding: 0.55rem 1rem;
   cursor: pointer;
+  transition:
+    background-color 160ms var(--ease),
+    border-color 160ms var(--ease),
+    box-shadow 160ms var(--ease),
+    color 160ms var(--ease),
+    transform 120ms var(--ease);
+}
+
+/* The button lifts under the pointer and presses back in on click, so it
+   acknowledges the interaction before the list has finished re-rendering. */
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .button--primary {
-  background: var(--accent);
-  color: #fff;
+  background-color: var(--accent);
+  background-image: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: var(--accent-contrast);
+  box-shadow: var(--shadow-sm);
+}
+
+.button--primary:hover {
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px var(--accent-ring);
 }
 
 .task-list {
@@ -150,6 +224,15 @@ h1 {
   border: 1px solid var(--border);
   border-radius: 0.65rem;
   padding: 0.7rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color 160ms var(--ease),
+    box-shadow 160ms var(--ease);
+}
+
+.task:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--shadow-md);
 }
 
 .task__title {
@@ -226,9 +309,21 @@ h1 {
   color: var(--muted);
 }
 
+.button--ghost:hover {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .button--danger {
-  background: #c0392b;
+  background: var(--danger);
   color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.button--danger:hover {
+  background: var(--danger-strong);
+  box-shadow: var(--shadow-md);
 }
 
 .task__actions .button {
@@ -382,5 +477,27 @@ h1 {
   .task__checkbox {
     width: 1.35rem;
     height: 1.35rem;
+  }
+}
+
+/* Reduced motion
+   --------------
+   Every animation here is decoration: the drifting background, the button lift
+   and the eased colour changes. None of them carries meaning, so a user who has
+   asked for less motion loses nothing by having them removed outright. */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  .button,
+  .task,
+  .field input {
+    transition: none;
+  }
+
+  .button:hover,
+  .button:active {
+    transform: none;
   }
 }
