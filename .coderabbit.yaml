@@ -1,8 +1,16 @@
 # CodeRabbit configuration
 # https://docs.coderabbit.ai/guides/configure-coderabbit
 reviews:
+  # Report only what is worth acting on, so a genuinely clean change stays clean
+  # and the approval below is reachable in practice.
+  profile: chill
+  # Submit a real review rather than a plain comment: request changes when there
+  # are actionable findings, approve once the latest commit is clean. A branch
+  # protection rule requiring one approval then gates merges on the review.
+  request_changes_workflow: true
   auto_review:
     enabled: true
+    drafts: false
   path_filters:
     # Build output, committed only for the Pages deploy preview.
     - "!dist/**"
