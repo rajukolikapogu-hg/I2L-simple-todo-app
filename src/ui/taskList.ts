@@ -8,7 +8,7 @@ export interface TaskListActions {
   onEditDueDate(id: string, dueDate: string): boolean;
 }
 
-export const INVALID_DUE_DATE_MESSAGE = 'Please choose a valid due date.';
+export const INVALID_DUE_DATE_MESSAGE = 'Please choose a valid due date and time.';
 
 export const EMPTY_STATE_MESSAGE = 'Nothing to do yet — add your first task above.';
 
@@ -72,7 +72,8 @@ function renderTaskItem(task: Task, actions: TaskListActions): HTMLLIElement {
 }
 
 /**
- * The task's due date, which swaps in place for a date input when edited.
+ * The task's due date and time, which swaps in place for a date-and-time input
+ * when edited.
  *
  * The input is pre-filled with the current value, and a rejected date leaves
  * both the editor open and the stored value untouched, so nothing is lost when
@@ -103,7 +104,7 @@ function buildDueDateControl(task: Task, actions: TaskListActions): HTMLDivEleme
   editor.hidden = true;
 
   const input = document.createElement('input');
-  input.type = 'date';
+  input.type = 'datetime-local';
   input.className = 'task__due-input';
   input.id = `task-due-${task.id}`;
   input.setAttribute('aria-label', `Due date for "${task.title}"`);
@@ -244,13 +245,20 @@ function buildDeleteControl(task: Task, actions: TaskListActions): HTMLDivElemen
   return wrapper;
 }
 
-/** Renders an ISO date as e.g. "15 Jan 2026", falling back to the raw value. */
-export function formatDueDate(isoDate: string): string {
-  const parsed = new Date(`${isoDate}T00:00:00`);
-  if (Number.isNaN(parsed.getTime())) return isoDate;
-  return parsed.toLocaleDateString(undefined, {
+/**
+ * Renders a local date and time as e.g. "15 Jan 2026, 9:30 am" in the viewer's
+ * locale, falling back to the raw value.
+ */
+export function formatDueDate(isoDateTime: string): string {
+  // With no offset, a date-time string is parsed as local time, which is what
+  // the user picked.
+  const parsed = new Date(isoDateTime);
+  if (Number.isNaN(parsed.getTime())) return isoDateTime;
+  return parsed.toLocaleString(undefined, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
   });
 }

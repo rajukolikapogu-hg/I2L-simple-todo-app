@@ -42,7 +42,7 @@ describe('resilient hydration', () => {
     const valid = {
       id: 'a1',
       title: 'Real task',
-      dueDate: '2026-01-15',
+      dueDate: '2026-01-15T09:00',
       completed: false,
       createdAt: '2026-01-01T00:00:00.000Z',
     };
@@ -56,11 +56,30 @@ describe('resilient hydration', () => {
     expect(new TaskStorage(storage).load()).toEqual([valid]);
   });
 
+  it('upgrades tasks saved with a date-only due date to the end of that day', () => {
+    const legacy = {
+      id: 'a1',
+      title: 'Saved before times',
+      dueDate: '2026-01-15',
+      completed: false,
+      createdAt: '2026-01-01T00:00:00.000Z',
+    };
+    const backing = seeded(JSON.stringify({ version: 1, tasks: [legacy] }));
+    const store = new TaskStore(new TaskStorage(backing));
+
+    expect(store.getTasks()).toEqual([{ ...legacy, dueDate: '2026-01-15T23:59' }]);
+
+    // The next write stores the upgraded shape.
+    store.update('a1', { completed: true });
+    const saved = JSON.parse(backing.getItem(STORAGE_KEY) as string).tasks;
+    expect(saved[0].dueDate).toBe('2026-01-15T23:59');
+  });
+
   it('stays usable after loading from an invalid state', () => {
     const store = new TaskStore(new TaskStorage(seeded('{{{')));
 
     expect(store.getTasks()).toEqual([]);
-    store.add({ title: 'Still works', dueDate: '2026-04-01' });
+    store.add({ title: 'Still works', dueDate: '2026-04-01T09:00' });
     expect(store.getTasks()).toHaveLength(1);
   });
 });
@@ -76,7 +95,7 @@ describe('unavailable storage', () => {
   it('keeps the app fully usable with no working storage', () => {
     const store = new TaskStore(new TaskStorage(new ThrowingStorage()));
 
-    const task = store.add({ title: 'In-memory only', dueDate: '2026-05-01' });
+    const task = store.add({ title: 'In-memory only', dueDate: '2026-05-01T09:00' });
     store.update(task.id, { completed: true });
 
     expect(store.getTasks()[0]?.completed).toBe(true);

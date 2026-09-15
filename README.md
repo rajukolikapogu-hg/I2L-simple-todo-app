@@ -1,7 +1,7 @@
 # My Todo Tasks
 
-A small, client-only todo app. Add tasks with a due date, tick them off, edit
-dates, delete them — all kept in one list sorted by what's due soonest.
+A small, client-only todo app. Add tasks with a due date and time, tick them
+off, edit them, delete them — all kept in one list sorted by what's due soonest.
 
 There is no backend and no account. Everything lives in your browser's local
 storage, which means tasks stay on the device you created them on, and clearing
@@ -9,11 +9,12 @@ your browsing data erases them. The app says so in a notice below the list.
 
 ## Using it
 
-- **Add a task** — type a title, pick a due date, press **Add task** or `Enter`.
-  A blank title is rejected with a message; the due date defaults to today.
+- **Add a task** — type a title, pick a due date and time, press **Add task** or
+  `Enter`. A blank title is rejected with a message; the due date defaults to
+  the end of today (11:59 pm). Each task shows its due date and time.
 - **Complete a task** — tick its checkbox. Completed tasks stay in place, struck
   through, and can be un-ticked.
-- **Change a due date** — press **Edit date**, pick a new one, then **Save**
+- **Change a due date** — press **Edit date**, pick a new date and time, then **Save**
   (`Enter` saves, `Escape` cancels). The list re-orders itself immediately.
 - **Delete a task** — press **Delete**, then confirm. Nothing is removed until
   you confirm.

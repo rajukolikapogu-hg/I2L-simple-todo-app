@@ -53,7 +53,7 @@ describe('accessible names', () => {
 
   it('names every control on a task row after its task', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     const named = ['.task__checkbox', '.task__edit-due', '.task__delete'].map(
@@ -67,7 +67,7 @@ describe('accessible names', () => {
 
   it('names the controls revealed by the editor and the delete confirmation', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     click(row.querySelector<HTMLElement>('.task__edit-due')!);
@@ -103,8 +103,8 @@ describe('accessible names', () => {
 
   it('reports no missing-label violations with tasks and every control open', async () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
-    ui.submit('Call the bank', '2026-02-01');
+    ui.submit('Buy milk', '2026-01-15T09:00');
+    ui.submit('Call the bank', '2026-02-01T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     // Open the editor and the confirmation, so the audit also sees the controls
@@ -118,7 +118,7 @@ describe('accessible names', () => {
 
   it('reports no missing-label violations while a validation error is showing', async () => {
     const ui = mountTestApp();
-    ui.submit('   ', '2026-01-15');
+    ui.submit('   ', '2026-01-15T09:00');
 
     const violations = await auditLabels(ui.root);
     expect(describeViolations(violations)).toEqual([]);

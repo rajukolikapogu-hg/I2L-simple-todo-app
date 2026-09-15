@@ -1,6 +1,6 @@
 import { sortByDueDate } from '../domain/sortTasks';
 import type { TaskStore } from '../domain/taskStore';
-import { isIsoDate } from '../domain/task';
+import { isIsoDateTime } from '../domain/task';
 import { validateNewTask } from '../domain/validation';
 import { createTaskForm } from './taskForm';
 import { renderTaskList } from './taskList';
@@ -68,7 +68,7 @@ export function mountApp(
       onEditDueDate: (id, dueDate) => {
         // Reject rather than persist: the row keeps the prior value on screen
         // and surfaces the message itself.
-        if (!isIsoDate(dueDate)) return false;
+        if (!isIsoDateTime(dueDate)) return false;
         refocusTaskId = id;
         store.update(id, { dueDate });
         return true;
