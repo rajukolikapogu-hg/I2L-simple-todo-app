@@ -21,7 +21,7 @@ export function mountApp(
   main.className = 'app';
 
   const heading = document.createElement('h1');
-  heading.textContent = 'My Todos';
+  heading.textContent = 'My Todo Tasks';
 
   // Name the form and the list regions, so a screen reader user moving by
   // landmark hears what each one is rather than "form" and "list".

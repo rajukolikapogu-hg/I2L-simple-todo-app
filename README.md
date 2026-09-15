@@ -1,4 +1,4 @@
-# My Todos
+# My Todo Tasks
 
 A small, client-only todo app. Add tasks with a due date, tick them off, edit
 dates, delete them — all kept in one list sorted by what's due soonest.
