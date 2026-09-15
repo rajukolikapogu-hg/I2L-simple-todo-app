@@ -60,7 +60,7 @@ describe('responsive layout', () => {
   it('renders a very long title as one wrappable element, not a wide one', () => {
     const ui = mountTestApp();
     const longTitle = 'Supercalifragilisticexpialidocious'.repeat(6);
-    ui.submit(longTitle, '2026-01-15');
+    ui.submit(longTitle, '2026-01-15T09:00');
 
     const title = ui.q<HTMLSpanElement>('.task__title');
     // A single text node with no nested structure, so nothing inside it can

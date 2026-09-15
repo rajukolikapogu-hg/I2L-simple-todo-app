@@ -1,4 +1,4 @@
-import { isTask, type Task } from '../domain/task';
+import { isTask, withDueTime, type Task } from '../domain/task';
 
 /**
  * Everything the app persists lives under this one versioned key, so a future
@@ -67,10 +67,23 @@ export class TaskStorage {
   }
 }
 
-/** Pulls the task array out of a parsed payload, dropping malformed entries. */
+/**
+ * Pulls the task array out of a parsed payload, dropping malformed entries.
+ *
+ * Tasks saved before due dates carried a time hold a bare `YYYY-MM-DD`; they are
+ * upgraded to the end of that day rather than dropped, and the next save writes
+ * them back in the new shape.
+ */
 export function extractTasks(parsed: unknown): Task[] {
   if (typeof parsed !== 'object' || parsed === null) return [];
   const tasks = (parsed as { tasks?: unknown }).tasks;
   if (!Array.isArray(tasks)) return [];
-  return tasks.filter(isTask);
+  return tasks.map(upgradeDueDate).filter(isTask);
+}
+
+function upgradeDueDate(entry: unknown): unknown {
+  if (typeof entry !== 'object' || entry === null) return entry;
+  const dueDate = (entry as { dueDate?: unknown }).dueDate;
+  const upgraded = withDueTime(dueDate);
+  return upgraded === dueDate ? entry : { ...entry, dueDate: upgraded };
 }

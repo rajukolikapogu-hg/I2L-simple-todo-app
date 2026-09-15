@@ -16,7 +16,7 @@ describe('completing a task', () => {
 
   it('marks the task complete and keeps it in the list', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const id = ui.store.getTasks()[0]!.id;
 
     toggle(ui.checkboxes()[0]!);
@@ -28,7 +28,7 @@ describe('completing a task', () => {
 
   it('restores normal styling when un-ticked', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const id = ui.store.getTasks()[0]!.id;
 
     toggle(ui.checkboxes()[0]!);
@@ -40,8 +40,8 @@ describe('completing a task', () => {
 
   it('toggles only the task that was clicked', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
 
     toggle(ui.checkboxes()[1]!);
 
@@ -59,7 +59,7 @@ describe('completing a task', () => {
 
     const form = root.querySelector<HTMLFormElement>('form')!;
     root.querySelector<HTMLInputElement>('#task-title')!.value = 'Buy milk';
-    root.querySelector<HTMLInputElement>('#task-due-date')!.value = '2026-01-15';
+    root.querySelector<HTMLInputElement>('#task-due-date')!.value = '2026-01-15T09:00';
     form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     toggle(root.querySelector<HTMLInputElement>('.task__checkbox')!);
 
@@ -76,7 +76,7 @@ describe('completing a task', () => {
 
   it('gives each checkbox an accessible name naming its task', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
 
     expect(ui.checkboxes()[0]!.getAttribute('aria-label')).toContain('Buy milk');
   });

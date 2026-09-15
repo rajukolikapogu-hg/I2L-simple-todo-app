@@ -7,7 +7,7 @@ Every action in the app is reachable and operable without a mouse.
 Tab moves through the page in reading order:
 
 1. **Task** title input
-2. **Due date** input
+2. **Due date** (date and time) input
 3. **Add task** button
 4. For each task in the list, in due-date order:
    1. completion checkbox

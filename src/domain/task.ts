@@ -1,8 +1,9 @@
 /**
  * A single todo item.
  *
- * `dueDate` is an ISO calendar date (`YYYY-MM-DD`) so it round-trips through
- * `<input type="date">` and JSON without timezone drift. `createdAt` is a full
+ * `dueDate` is a local date and time (`YYYY-MM-DDTHH:mm`) so it round-trips
+ * through `<input type="datetime-local">` and JSON without timezone drift: the
+ * wall-clock time the user picked is the one shown back. `createdAt` is a full
  * ISO-8601 timestamp.
  */
 export interface Task {
@@ -28,6 +29,29 @@ export function isIsoDate(value: unknown): value is string {
   return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
 }
 
+/** Matches a local date and time to the minute, e.g. `2026-01-15T09:30`. */
+const ISO_DATE_TIME = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/;
+
+export function isIsoDateTime(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  const match = ISO_DATE_TIME.exec(value);
+  if (!match) return false;
+  const [, date, hours, minutes] = match;
+  return isIsoDate(date) && Number(hours) < 24 && Number(minutes) < 60;
+}
+
+/**
+ * The time given to a due date saved before due dates carried one: the end of
+ * that day, so the task still reads as due "that day" and sorts after anything
+ * given an explicit time on the same date.
+ */
+export const END_OF_DAY = '23:59';
+
+/** Upgrades a date-only due date to a date and time; anything else is unchanged. */
+export function withDueTime(value: unknown): unknown {
+  return isIsoDate(value) ? `${value}T${END_OF_DAY}` : value;
+}
+
 /** Narrows an unknown value (e.g. parsed JSON) to a well-formed Task. */
 export function isTask(value: unknown): value is Task {
   if (typeof value !== 'object' || value === null) return false;
@@ -36,7 +60,7 @@ export function isTask(value: unknown): value is Task {
     typeof t.id === 'string' &&
     t.id.length > 0 &&
     typeof t.title === 'string' &&
-    isIsoDate(t.dueDate) &&
+    isIsoDateTime(t.dueDate) &&
     typeof t.completed === 'boolean' &&
     typeof t.createdAt === 'string'
   );

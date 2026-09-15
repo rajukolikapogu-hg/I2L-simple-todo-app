@@ -30,7 +30,7 @@ describe('keyboard operation', () => {
 
   it('puts every primary action in the tab order, in reading order', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
 
     const ids = tabbable(ui.root).map(
       (el) =>
@@ -51,7 +51,7 @@ describe('keyboard operation', () => {
 
   it('keeps hidden controls out of the tab order until they are shown', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     const classesOf = () => tabbable(ui.root).flatMap((el) => [...el.classList]);
@@ -70,7 +70,7 @@ describe('keyboard operation', () => {
 
     // Create: type and press Enter, which submits the form natively.
     ui.title.value = 'Buy milk';
-    ui.dueDate.value = '2026-01-15';
+    ui.dueDate.value = '2026-01-15T09:00';
     ui.form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     expect(ui.titles()).toEqual(['Buy milk']);
 
@@ -85,9 +85,9 @@ describe('keyboard operation', () => {
     // Edit: open, type, Enter to save.
     click(ui.row(id).querySelector<HTMLElement>('.task__edit-due')!);
     const input = ui.row(id).querySelector<HTMLInputElement>('.task__due-input')!;
-    input.value = '2026-02-20';
+    input.value = '2026-02-20T09:00';
     press(input, 'Enter');
-    expect(ui.store.getTasks()[0]!.dueDate).toBe('2026-02-20');
+    expect(ui.store.getTasks()[0]!.dueDate).toBe('2026-02-20T09:00');
 
     // Delete: activate, then confirm.
     const row = ui.row(id);
@@ -98,7 +98,7 @@ describe('keyboard operation', () => {
 
   it('never leaves focus on an element that has just been hidden', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     click(row.querySelector<HTMLElement>('.task__delete')!);
@@ -116,7 +116,7 @@ describe('keyboard operation', () => {
 
   it('uses real buttons and a real checkbox so activation comes from the platform', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     for (const selector of ['.task__edit-due', '.task__delete']) {

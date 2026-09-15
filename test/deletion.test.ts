@@ -20,7 +20,7 @@ describe('deleting a task', () => {
 
   it('asks for confirmation before removing anything', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     click(within(row, '.task__delete'));
@@ -34,7 +34,7 @@ describe('deleting a task', () => {
 
   it('removes the task from the list and storage once confirmed', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     click(within(row, '.task__delete'));
@@ -47,7 +47,7 @@ describe('deleting a task', () => {
 
   it('keeps the task when the confirmation is cancelled', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     click(within(row, '.task__delete'));
@@ -60,9 +60,9 @@ describe('deleting a task', () => {
 
   it('deletes only the confirmed task and re-renders immediately', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
-    ui.submit('Third', '2026-03-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
+    ui.submit('Third', '2026-03-01T09:00');
     const second = ui.store.getTasks().find((t) => t.title === 'Second')!;
 
     const row = ui.row(second.id);
@@ -74,7 +74,7 @@ describe('deleting a task', () => {
 
   it('deletes a completed task the same way as an incomplete one', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const id = ui.store.getTasks()[0]!.id;
     const checkbox = ui.checkboxes()[0]!;
     checkbox.checked = true;
@@ -95,7 +95,7 @@ describe('deleting a task', () => {
 
     const form = root.querySelector<HTMLFormElement>('form')!;
     root.querySelector<HTMLInputElement>('#task-title')!.value = 'Buy milk';
-    root.querySelector<HTMLInputElement>('#task-due-date')!.value = '2026-01-15';
+    root.querySelector<HTMLInputElement>('#task-due-date')!.value = '2026-01-15T09:00';
     form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     click(root.querySelector<HTMLElement>('.task__delete')!);
     click(root.querySelector<HTMLElement>('.task__confirm-delete')!);
@@ -109,7 +109,7 @@ describe('deleting a task', () => {
 
   it('names the task in every delete control for assistive technology', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
     const row = ui.row(ui.store.getTasks()[0]!.id);
 
     expect(within(row, '.task__delete').getAttribute('aria-label')).toContain('Buy milk');

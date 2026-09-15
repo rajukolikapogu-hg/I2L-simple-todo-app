@@ -9,8 +9,8 @@ describe('TaskStorage', () => {
     const storage = new TaskStorage(backing);
     const store = new TaskStore(storage);
 
-    store.add({ title: 'Buy milk', dueDate: '2026-01-15' });
-    store.add({ title: 'Call the bank', dueDate: '2026-01-10' });
+    store.add({ title: 'Buy milk', dueDate: '2026-01-15T09:00' });
+    store.add({ title: 'Call the bank', dueDate: '2026-01-10T09:00' });
 
     // A fresh store reading the same backing storage sees both tasks: this is
     // what happens when the tab is closed and reopened.
@@ -26,7 +26,7 @@ describe('TaskStorage', () => {
     const backing = new MemoryStorage();
     const store = new TaskStore(new TaskStorage(backing));
 
-    store.add({ title: 'Ship it', dueDate: '2026-02-01' });
+    store.add({ title: 'Ship it', dueDate: '2026-02-01T09:00' });
 
     const raw = backing.getItem(STORAGE_KEY);
     expect(raw).not.toBeNull();
@@ -38,7 +38,7 @@ describe('TaskStorage', () => {
     const store = new TaskStore(new TaskStorage(backing));
     const read = () => JSON.parse(backing.getItem(STORAGE_KEY) as string).tasks;
 
-    const task = store.add({ title: 'Draft the plan', dueDate: '2026-03-01' });
+    const task = store.add({ title: 'Draft the plan', dueDate: '2026-03-01T09:00' });
     expect(read()).toHaveLength(1);
 
     store.update(task.id, { completed: true });
@@ -53,7 +53,7 @@ describe('TaskStorage', () => {
     const seen: number[] = [];
     store.subscribe((tasks) => seen.push(tasks.length));
 
-    const task = store.add({ title: 'A', dueDate: '2026-01-01' });
+    const task = store.add({ title: 'A', dueDate: '2026-01-01T09:00' });
     store.remove(task.id);
 
     expect(seen).toEqual([1, 0]);

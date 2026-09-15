@@ -23,35 +23,35 @@ describe('re-ordering after a due-date change', () => {
 
   it('moves a task to the front when its date is brought forward', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
-    ui.submit('Third', '2026-03-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
+    ui.submit('Third', '2026-03-01T09:00');
     const third = ui.store.getTasks().find((t) => t.title === 'Third')!;
 
-    editDueDate(ui.root, third.id, '2025-12-01');
+    editDueDate(ui.root, third.id, '2025-12-01T09:00');
 
     expect(ui.titles()).toEqual(['Third', 'First', 'Second']);
   });
 
   it('moves a task to the back when its date is pushed out', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
-    ui.submit('Third', '2026-03-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
+    ui.submit('Third', '2026-03-01T09:00');
     const first = ui.store.getTasks().find((t) => t.title === 'First')!;
 
-    editDueDate(ui.root, first.id, '2026-12-31');
+    editDueDate(ui.root, first.id, '2026-12-31T09:00');
 
     expect(ui.titles()).toEqual(['Second', 'Third', 'First']);
   });
 
   it('re-sorts immediately, without a reload', () => {
     const ui = mountTestApp();
-    ui.submit('A', '2026-05-01');
-    ui.submit('B', '2026-06-01');
+    ui.submit('A', '2026-05-01T09:00');
+    ui.submit('B', '2026-06-01T09:00');
     const b = ui.store.getTasks().find((t) => t.title === 'B')!;
 
-    editDueDate(ui.root, b.id, '2026-01-01');
+    editDueDate(ui.root, b.id, '2026-01-01T09:00');
 
     // Read straight back off the live DOM — no re-mount in between.
     expect(ui.titles()).toEqual(['B', 'A']);
@@ -59,8 +59,8 @@ describe('re-ordering after a due-date change', () => {
 
   it('leaves the order untouched when an invalid date is rejected', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
     const second = ui.store.getTasks().find((t) => t.title === 'Second')!;
 
     editDueDate(ui.root, second.id, '');
@@ -70,11 +70,11 @@ describe('re-ordering after a due-date change', () => {
 
   it('keeps focus on the moved task after the list re-sorts', () => {
     const ui = mountTestApp();
-    ui.submit('First', '2026-01-01');
-    ui.submit('Second', '2026-02-01');
+    ui.submit('First', '2026-01-01T09:00');
+    ui.submit('Second', '2026-02-01T09:00');
     const second = ui.store.getTasks().find((t) => t.title === 'Second')!;
 
-    editDueDate(ui.root, second.id, '2025-01-01');
+    editDueDate(ui.root, second.id, '2025-01-01T09:00');
 
     // The row was destroyed and rebuilt in a new position; focus should follow
     // it rather than falling back to the document body.
@@ -95,12 +95,12 @@ describe('re-ordering after a due-date change', () => {
       root.querySelector<HTMLInputElement>('#task-due-date')!.value = date;
       form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     };
-    add('First', '2026-01-01');
-    add('Second', '2026-02-01');
-    add('Third', '2026-03-01');
+    add('First', '2026-01-01T09:00');
+    add('Second', '2026-02-01T09:00');
+    add('Third', '2026-03-01T09:00');
 
     const third = store.getTasks().find((t) => t.title === 'Third')!;
-    editDueDate(root, third.id, '2025-11-01');
+    editDueDate(root, third.id, '2025-11-01T09:00');
 
     const reloaded = document.createElement('div');
     document.body.replaceChildren(reloaded);

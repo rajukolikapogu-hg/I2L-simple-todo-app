@@ -1,4 +1,4 @@
-import type { NewTaskInput } from '../domain/task';
+import { END_OF_DAY, type NewTaskInput } from '../domain/task';
 import type { ValidationResult } from '../domain/validation';
 
 export interface TaskFormHandle {
@@ -37,10 +37,10 @@ export function createTaskForm(onSubmit: (input: NewTaskInput) => void): TaskFor
     id: 'task-due-date',
     name: 'dueDate',
     label: 'Due date',
-    type: 'date',
+    type: 'datetime-local',
     className: 'field--date',
   });
-  dueDate.input.value = today();
+  dueDate.input.value = defaultDueDate();
 
   const submit = document.createElement('button');
   submit.type = 'submit';
@@ -61,7 +61,7 @@ export function createTaskForm(onSubmit: (input: NewTaskInput) => void): TaskFor
     focus: () => title.input.focus(),
     reset: () => {
       title.input.value = '';
-      dueDate.input.value = today();
+      dueDate.input.value = defaultDueDate();
     },
     setErrors: (errors) => {
       let focused = false;
@@ -132,8 +132,17 @@ function buildField(options: {
   };
 }
 
-/** Today as an ISO calendar date, used as the default due date. */
+/** Today as an ISO calendar date. */
 export function today(now: Date = new Date()): string {
   const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
   return local.toISOString().slice(0, 10);
+}
+
+/**
+ * The end of today, used as the default due date. A fixed time rather than
+ * "now" keeps the default on today whenever the form is opened, and leaves the
+ * task due "some time today" until the user picks an hour.
+ */
+export function defaultDueDate(now: Date = new Date()): string {
+  return `${today(now)}T${END_OF_DAY}`;
 }

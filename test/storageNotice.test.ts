@@ -51,7 +51,7 @@ describe('the storage notice', () => {
 
   it('does not obstruct the create form or the task controls', () => {
     const ui = mountTestApp();
-    ui.submit('Buy milk', '2026-01-15');
+    ui.submit('Buy milk', '2026-01-15T09:00');
 
     // The notice is a sibling, not a wrapper or an overlay over the controls.
     const notice = ui.q<HTMLParagraphElement>('.notice');
